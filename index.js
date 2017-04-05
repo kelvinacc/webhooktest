@@ -11,16 +11,19 @@ restService.use(bodyParser.urlencoded({
 
 restService.use(bodyParser.json());
 
-restService.post('/', function(req, res) {
-    var speech = req.body.result && req.body.result.parameters && req.body.result.parameters.echoText ? req.body.result.parameters.echoText : "Seems like some problem. Speak again."
-    return res.json({
-        speech: speech,
-        displayText: speech,
-        source: 'webhook-sample'
-    });
+restService.post('/', function (req, res) {
+    var speech = req.body.result && req.body.result.parameters && req.body.result.parameters.echoText ? req.body.result.parameters.echoText : "Seems like some problem. Speak again.";
+    console.log(req.body.result);
+    if (req.body.result.metadata) {
+        return res.json({
+            speech: speech,
+            displayText: speech,
+            source: 'webhook-sample'
+        });
+    }
 });
 
-restService.post('/slack-test', function(req, res) {
+restService.post('/slack-test', function (req, res) {
 
     var slack_message = {
         "text": "Details of JIRA board for Browse and Commerce",
@@ -77,6 +80,6 @@ restService.post('/slack-test', function(req, res) {
 
 
 
-restService.listen((process.env.PORT || 4200), function() {
+restService.listen((process.env.PORT || 4200), function () {
     console.log("Server up and listening");
 });
